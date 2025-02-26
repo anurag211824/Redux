@@ -1,8 +1,8 @@
 import { combineReducers, createStore } from "redux";
-import { cartReducer } from "./cartReducer.js";
+import  {cartReducer}  from "./cartReducer.js";
 import { wishListReducer } from "./wishListReducer.js";
 import { productReducer } from "./productsReducer.js";
-import { addcartItem } from "./cartReducer.js";
+import { addCartItem } from "./cartReducer.js";
 import { increaseCartItemQuantity } from "./cartReducer.js";
 import {decreaseCartItemQuantity} from './cartReducer.js'
 import { removeCartItem } from "./cartReducer.js";
@@ -77,18 +77,18 @@ console.log(reducer);
 export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
 console.log(store);
 // Dispatch actions to test the Redux store
-store.dispatch(addcartItem(1, 2)); // Add item with productId 1 and quantity 2
-store.dispatch(addcartItem(2, 1)); // Add item with productId 2 and quantity 1
-store.dispatch(addcartItem(3, 5)); // Add item with productId 3 and quantity 5
-store.dispatch(increaseCartItemQuantity(1)); // Increase quantity of item with productId 1
-store.dispatch(increaseCartItemQuantity(3)); // Increase quantity of item with productId 3
-store.dispatch(decreaseCartItemQuantity(3)); // Decrease quantity of item with productId 3
-store.dispatch(removeCartItem(2)); // Remove item with productId 2
+// store.dispatch(addCartItem(1, 2));
+// store.dispatch(addCartItem(2, 1)); 
+// store.dispatch(addCartItem(3, 5)); 
+// store.dispatch(increaseCartItemQuantity(1)); 
+// store.dispatch(increaseCartItemQuantity(3)); 
+// store.dispatch(decreaseCartItemQuantity(3)); 
+// store.dispatch(removeCartItem(2)); 
 
-store.dispatch(addWishListItem(1));
-store.dispatch(addWishListItem(2));
-store.dispatch(addWishListItem(3));
-store.dispatch(addWishListItem(4));
-store.dispatch(removeWishListItem(4));
-console.log(store.getState());
+// store.dispatch(addWishListItem(1));
+// store.dispatch(addWishListItem(2));
+// store.dispatch(addWishListItem(3));
+// store.dispatch(addWishListItem(4));
+// store.dispatch(removeWishListItem(4));
+// console.log(store.getState());
 

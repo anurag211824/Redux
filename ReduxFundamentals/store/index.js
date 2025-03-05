@@ -1,13 +1,9 @@
 import { combineReducers, createStore } from "redux";
-import  {cartReducer}  from "./cartReducer.js";
-import { wishListReducer } from "./wishListReducer.js";
-import { productReducer } from "./productsReducer.js";
-import { addCartItem } from "./cartReducer.js";
-import { increaseCartItemQuantity } from "./cartReducer.js";
-import {decreaseCartItemQuantity} from './cartReducer.js'
-import { removeCartItem } from "./cartReducer.js";
-import { addWishListItem } from "./wishListReducer.js";
-import { removeWishListItem } from "./wishListReducer.js"
+import  {cartReducer}  from "./slices/cartReducer.js";
+import { wishListReducer } from "./slices/wishListReducer.js";
+import { productReducer } from "./slices/productsReducer.js";
+import {produce} from "immer"
+
 
 
 // const initialState = {
@@ -75,20 +71,45 @@ console.log(reducer);
 }
 */
 export const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
-console.log(store);
-// Dispatch actions to test the Redux store
-// store.dispatch(addCartItem(1, 2));
-// store.dispatch(addCartItem(2, 1)); 
-// store.dispatch(addCartItem(3, 5)); 
-// store.dispatch(increaseCartItemQuantity(1)); 
-// store.dispatch(increaseCartItemQuantity(3)); 
-// store.dispatch(decreaseCartItemQuantity(3)); 
-// store.dispatch(removeCartItem(2)); 
+console.log(store.getState());
 
-// store.dispatch(addWishListItem(1));
-// store.dispatch(addWishListItem(2));
-// store.dispatch(addWishListItem(3));
-// store.dispatch(addWishListItem(4));
-// store.dispatch(removeWishListItem(4));
-// console.log(store.getState());
+
+const users=[
+  {
+   name:"Anurag Kumar",
+   age:21,
+  },
+  {
+  name:"Abinav",
+  age:"20",
+  },
+  {
+  name:"Deepak",
+  age:"24",
+  },
+  {
+   name:'Aarsh Mall',
+   age:22,
+  }
+]
+
+// const newUsers=users.map((user,id)=>{
+//   if(id==2){
+//     return {...user,age:19}
+//   }
+//   return user
+// })
+
+
+
+// const newUsers=produce(users,(usersCopy)=>{
+//   console.log(usersCopy)
+//   usersCopy[1].age=19
+// })
+
+// console.log(users);
+// console.log(newUsers);
+
+
+
 

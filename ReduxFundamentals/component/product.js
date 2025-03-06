@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
-import { addCartItem } from '../store/slices/cartReducer'
-import { addWishListItem } from '../store/slices/wishListReducer';
+import { addCartItem } from '../store/slices/cartSlice'
+import { addWishlistItem } from '../store/slices/wishListSlice';
 
 export default function Product({ productId, title, rating, price, imageUrl }) {
   const dispatch = useDispatch()
@@ -22,12 +22,13 @@ export default function Product({ productId, title, rating, price, imageUrl }) {
       <button
           onClick={() => {
             dispatch(addCartItem({ productId, title, rating, price, imageUrl }));
+           
           }}
         >
           Add to Cart
         </button>
         <button onClick={()=>{
-          dispatch(addWishListItem({ productId, title, rating, price, imageUrl }))
+          dispatch(addWishlistItem({ productId, title, rating, price, imageUrl }))
         }}>Add to Wishlist</button>
       </div>
     </div>

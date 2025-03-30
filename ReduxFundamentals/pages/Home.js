@@ -5,9 +5,10 @@ import Product from '../component/product'
 export default function Home() {
   const productsList = useSelector((state) => state.products.list)
   const isLoading =useSelector((state) => state.products.loading)
+  const error = useSelector((state) => state.products.error);
   return (
-    isLoading? <h1 style={{textAlign:"center"}}>Loading products...</h1> :  // if loading is true, display loading message
-    <div className="products-container">
+    isLoading ? (<h1 style={{textAlign:"center"}}>Loading products...</h1>) :
+    error ? (<h2 style={{textAlign:"center"}}>{error}</h2>) : (<div className="products-container">
       {productsList.map(({ id, title, rating, price, image }) => (
         <Product
           key={id}
@@ -18,6 +19,6 @@ export default function Home() {
           imageUrl={image}
         />
       ))}
-    </div>
+    </div>)
   )
 }

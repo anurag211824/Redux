@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import CartIcon from "../assets/cart-icon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import WishListIcon from "../assets/wishList.png";
-import { fetchProducts, updateAllProducts } from "../store/slices/productsSlice";
+import { fetchProducts, fetchProductsError, updateAllProducts } from "../store/slices/productsSlice";
+import { fetchCartItems, loadCartItems,fetchCartItemsError } from "../store/slices/cartSlice";
 
 export default function Header() {
-  const cartItems = useSelector((state) => state.cartItems);
+  const cartItems = useSelector((state) => state.cartItems.list);
   const wishList = useSelector((state) => state.wishList);
   const dispatch=useDispatch();
   useEffect(()=>{
@@ -15,9 +16,19 @@ export default function Header() {
     return response.json();
   }).then((data)=>{
     dispatch(updateAllProducts(data));
+  }) .catch((error) => {
+    dispatch(fetchProductsError()); // Dispatch error action
+  });
+   dispatch(fetchCartItems())
+  fetch("https://fakestoreapi.com/carts/5").then((res)=>{
+    return res.json();
+  }).then((data)=>{
+    dispatch(loadCartItems(data))
+  }).catch((error) => {
+    dispatch(fetchCartItemsError()); // Dispatch error action
   })
   },[])
-  console.log(cartItems);
+  // console.log(cartItems);
   return (
     <header>
       <div className="header-contents">

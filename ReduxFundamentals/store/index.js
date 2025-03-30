@@ -2,7 +2,7 @@
 import cartReducer from "./slices/cartSlice.js";
 import wishListReducer from "./slices/wishListSlice.js";
 
-import {productReducer}  from "./slices/productsSlice.js";
+import productReducer  from "./slices/productsSlice.js";
 // import { produce } from "immer";
 import { configureStore } from "@reduxjs/toolkit";
 import { logger } from "./middleware/logger.js";
@@ -85,7 +85,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // ✅ Correct
 });
-
+//demomstrattion of immer js library
 // const users = [
 //   {
 //     name: "Anurag Kumar",

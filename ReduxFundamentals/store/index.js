@@ -5,6 +5,7 @@ import wishListReducer from "./slices/wishListSlice.js";
 import {productReducer}  from "./slices/productsSlice.js";
 // import { produce } from "immer";
 import { configureStore } from "@reduxjs/toolkit";
+import { logger } from "./middleware/logger.js";
 
 // const initialState = {
 //   products: productList,
@@ -82,6 +83,7 @@ export const store = configureStore({
     cartItems: cartReducer,
     wishList: wishListReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // ✅ Correct
 });
 
 // const users = [

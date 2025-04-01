@@ -4,7 +4,7 @@
 // const CART_ITEM_INCREASE_QUANTITY = "cart/increaseCartItemQuantity";
 // const CART_ITEM_DECREASE_QUANTITY = "cart/decreaseCartItemQuantity";
 // import { produce } from "immer";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 // 2. Action Creators
 //....................................................................
@@ -183,5 +183,22 @@ export const {
   fetchCartItemsError,
 } = slice.actions;
 
+
+//Selector getCartItems returned a different result when called with the same parameters. T
+// his can lead to unnecessary rerenders.Selectors that return a new reference (such as 
+// an object or an array) should be memoized: 
+const getCartItems = ({ products, cartItems }) => {
+  const updatedCart = cartItems.list.map(({ productId, quantity }) => {
+    const cartProduct = products.list.find((product) => product.id === productId)
+    return cartProduct ? { ...cartProduct, quantity } : null
+  }).filter(item => item !== null)
+
+  console.log("Updated Cart Items:", updatedCart) // Console log inside useSelector
+  return updatedCart
+}
+// memoization of getCartItems function
+export const getAllCartItems = createSelector(getCartItems,(state)=>state)
+export const getCartLoadingState = (state) => state.cartItems.loading
+export const getCartError = (state) => state.cartItems.error
 // Exporting the reducer
 export default slice.reducer;

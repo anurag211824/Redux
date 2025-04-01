@@ -1,21 +1,19 @@
 import React, { use } from 'react'
 import CartItem from '../component/CartItem'
 import { useSelector } from 'react-redux'
+import { getAllCartItems, getCartError,  getCartLoadingState } from '../store/slices/cartSlice'
 
 export default function Cart() {
-  const cartItems = useSelector(({ products, cartItems }) => {
-    const updatedCart = cartItems.list.map(({ productId, quantity }) => {
-      const cartProduct = products.list.find((product) => product.id === productId)
-      return cartProduct ? { ...cartProduct, quantity } : null
-    }).filter(item => item !== null) // Remove null values
 
-    console.log("Updated Cart Items:", updatedCart) // Console log inside useSelector
-    return updatedCart
-  })
+  //Selector getCartItems returned a different result when called with the same parameters. T
+// his can lead to unnecessary rerenders.Selectors that return a new reference (such as 
+// an object or an array) should be memoized: 
+// const cartItems = useSelector(getCartItems)
+const cartItems =useSelector(getAllCartItems)
 
   console.log("Cart Items in Component:", cartItems) // Log outside useSelector
-  const isLoading=useSelector((state)=>state.cartItems.loading)
-  const error =useSelector((state)=>state.cartItems.error)
+  const isLoading=useSelector(getCartLoadingState)
+  const error =useSelector(getCartError)
   return (
     isLoading? <h1 style={{textAlign:"center"}}>Loading cart items...</h1> :
     error ? (<h1 style={{textAlign:"center"}}>{error}</h1>):

@@ -23,6 +23,8 @@ const slice = createSlice({
     },
   },
 });
+
+
 export const getAllProducts = (state) => state.products.list
 export const getProductLoadingState = (state) => state.products.loading
 export const getproductError = (state) => state.products.error

@@ -20,7 +20,7 @@ const WishListItem = ({
       <button
         onClick={() => {
           console.log("Removing productId:", productId);
-          dispatch(removeWishListItem(productId));
+          dispatch(removeWishlistItem(productId));
         }}
       >
         Remove

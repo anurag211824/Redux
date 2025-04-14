@@ -6,6 +6,8 @@ import productReducer  from "./slices/productsSlice.js";
 // import { produce } from "immer";
 import { configureStore } from "@reduxjs/toolkit";
 import { logger } from "./middleware/logger.js";
+import { apiMiddleware } from "./middleware/api.js";
+import { func } from "./middleware/func.js";
 
 // const initialState = {
 //   products: productList,
@@ -83,7 +85,7 @@ export const store = configureStore({
     cartItems: cartReducer,
     wishList: wishListReducer,
   },
-  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger), // ✅ Correct
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiMiddleware).concat(logger).concat(func), // ✅ Correct
 });
 //demomstrattion of immer js library
 // const users = [

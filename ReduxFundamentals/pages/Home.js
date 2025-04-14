@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import Product from '../component/product'
+import Product from '../component/Product.js'
 import { getAllProducts, getproductError, getProductLoadingState } from '../store/slices/productsSlice'
 
 export default function Home() {

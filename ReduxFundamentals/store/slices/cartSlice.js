@@ -172,6 +172,27 @@ const slice = createSlice({
 //.................................................................................................
 console.log(slice.actions.addCartItem());
 
+// Thunk action creater
+export const fetchCartItemsData =()=> (dispatch)=>{
+   dispatch((dispatch)=>{
+    dispatch(fetchCartItems())
+    fetch(`https://fakestoreapi.com/carts/5`)  
+    .then((res)=>res.json())
+    .then((data)=>{
+      dispatch(loadCartItems(data))
+    })
+    .catch(()=>{
+      dispatch(fetchCartItemsError()) 
+    })
+   })
+}
+
+
+
+
+
+
+
 // Exporting action Creaters
 export const {
   addCartItem,

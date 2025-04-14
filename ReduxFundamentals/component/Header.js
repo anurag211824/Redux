@@ -3,36 +3,52 @@ import { Link } from "react-router-dom";
 import CartIcon from "../assets/cart-icon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import WishListIcon from "../assets/wishList.png";
-import { fetchProducts, fetchProductsError, updateAllProducts } from "../store/slices/productsSlice";
-import { fetchCartItems, loadCartItems,fetchCartItemsError } from "../store/slices/cartSlice";
+import { fetchProducts, fetchProductsData, fetchProductsError, updateAllProducts } from "../store/slices/productsSlice";
+import { fetchCartItems, loadCartItems,fetchCartItemsError, fetchCartItemsData } from "../store/slices/cartSlice";
 
 export default function Header() {
   const cartItems = useSelector((state) => state.cartItems.list);
   const wishList = useSelector((state) => state.wishList);
   const dispatch=useDispatch();
   useEffect(()=>{
-  dispatch({
-    type:"api/makeCall",
-    payload:{
-      url:'products',
-      onStart:fetchProducts.type,
-      onError:fetchProductsError.type,
-      onSuccess:updateAllProducts.type,
-    }
-  })
 
-  dispatch({
-    type:"api/makeCall",
-    payload:{
-      url:'carts/5',
-      onStart:fetchCartItems.type,
-      onError:fetchCartItemsError.type,
-      onSuccess: loadCartItems.type,
-    }
-  })
-  
+  // dispatch({
+  //   type:"api/makeCall",
+  //   payload:{
+  //     url:'products',
+  //     onStart:fetchProducts.type,
+  //     onError:fetchProductsError.type,
+  //     onSuccess:updateAllProducts.type,
+  //   }
+  // })
 
+  // dispatch({
+  //   type:"api/makeCall",
+  //   payload:{
+  //     url:'carts/5',
+  //     onStart:fetchCartItems.type,
+  //     onError:fetchCartItemsError.type,
+  //     onSuccess: loadCartItems.type,
+  //   }
+  // })
+//..................................................................................
+//  Redux thunk we can dispatch a function instead of an action object
+//  dispatch((dispatch)=>{
+//   dispatch(fetchCartItems())
+//   fetch(`https://fakestoreapi.com/carts/5`)
+//   .then((res)=>res.json())
+//   .then((data)=>{
+//     dispatch(loadCartItems(data))
+//   })
+//   .catch(()=>{
+//     dispatch(fetchCartItemsError()) 
+//   })
+//  })
+dispatch(fetchProductsData())
+dispatch(fetchCartItemsData())
+//..................................................................................
 
+//.....................................................................................
   //Commneted this part becuase we will use api middleware to fetch data from api
   // dispatch(fetchProducts())
   // fetch("https://fakestoreapi.com/products").then((response)=>{
@@ -50,6 +66,7 @@ export default function Header() {
   // }).catch((error) => {
   //   dispatch(fetchCartItemsError()); // Dispatch error action
   // })
+  //.....................................................................................
   },[])
   // console.log(cartItems);
   return (

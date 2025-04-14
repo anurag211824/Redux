@@ -85,7 +85,8 @@ export const store = configureStore({
     cartItems: cartReducer,
     wishList: wishListReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiMiddleware).concat(logger).concat(func), // ✅ Correct
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiMiddleware), // ✅ Correct
+  middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), apiMiddleware, func], // ✅ Correct
 });
 //demomstrattion of immer js library
 // const users = [

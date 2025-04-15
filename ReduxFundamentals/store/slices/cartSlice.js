@@ -5,6 +5,7 @@
 // const CART_ITEM_DECREASE_QUANTITY = "cart/decreaseCartItemQuantity";
 // import { produce } from "immer";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // 2. Action Creators
 //....................................................................
@@ -119,25 +120,38 @@ function findItemIndex(state, action) {
     (cartItem) => cartItem.productId === action.payload.productId
   );
 }
+
+export const fetchCartItemsData = createAsyncThunk(
+  "cart/fetchCartItems",
+  async () => {
+    try {
+      const response = await fetch(`https://fakestoreapi.com/carts/5`);
+      return response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 const slice = createSlice({
   name: "cart",
-  initialState:{
-    loading:false,
-    list:[],
+  initialState: {
+    loading: false,
+    list: [],
     error: "",
   },
   reducers: {
-    fetchCartItems(state){
-    state.loading = true;
-    },
-    fetchCartItemsError(state, action){
-      state.loading = false;
-      state.error = action.payload || "Something went wrong";
-    },
-    loadCartItems(state, action) {
-      state.list = action.payload.products;
-      state.loading = false;
-    },
+    // fetchCartItems(state){
+    // state.loading = true;
+    // },
+    // fetchCartItemsError(state, action){
+    //   state.loading = false;
+    //   state.error = action.payload || "Something went wrong";
+    // },
+    // loadCartItems(state, action) {
+    //   state.list = action.payload.products;
+    //   state.loading = false;
+    // },
     addCartItem(state, action) {
       const existingItemIndex = findItemIndex(state.list, action);
       if (existingItemIndex !== -1) {
@@ -168,30 +182,38 @@ const slice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCartItemsData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCartItemsData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload.products;
+      })
+      .addCase(fetchCartItemsData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong!";
+      });
+  },
 });
 //.................................................................................................
 console.log(slice.actions.addCartItem());
 
 // Thunk action creater
-export const fetchCartItemsData =()=> (dispatch)=>{
-   dispatch((dispatch)=>{
-    dispatch(fetchCartItems())
-    fetch(`https://fakestoreapi.com/carts/5`)  
-    .then((res)=>res.json())
-    .then((data)=>{
-      dispatch(loadCartItems(data))
-    })
-    .catch(()=>{
-      dispatch(fetchCartItemsError()) 
-    })
-   })
-}
-
-
-
-
-
-
+// export const fetchCartItemsData =()=> (dispatch)=>{
+//    dispatch((dispatch)=>{
+//     dispatch(fetchCartItems())
+//     fetch(`https://fakestoreapi.com/carts/5`)
+//     .then((res)=>res.json())
+//     .then((data)=>{
+//       dispatch(loadCartItems(data))
+//     })
+//     .catch(()=>{
+//       dispatch(fetchCartItemsError())
+//     })
+//    })
+// }
 
 // Exporting action Creaters
 export const {
@@ -199,27 +221,30 @@ export const {
   removeCartItem,
   decreaseCartItemQuantity,
   increaseCartItemQuantity,
-  loadCartItems,
-  fetchCartItems,
-  fetchCartItemsError,
+  // loadCartItems,
+  // fetchCartItems,
+  // fetchCartItemsError,
 } = slice.actions;
 
-
 //Selector getCartItems returned a different result when called with the same parameters. T
-// his can lead to unnecessary rerenders.Selectors that return a new reference (such as 
-// an object or an array) should be memoized: 
+// his can lead to unnecessary rerenders.Selectors that return a new reference (such as
+// an object or an array) should be memoized:
 const getCartItems = ({ products, cartItems }) => {
-  const updatedCart = cartItems.list.map(({ productId, quantity }) => {
-    const cartProduct = products.list.find((product) => product.id === productId)
-    return cartProduct ? { ...cartProduct, quantity } : null
-  }).filter(item => item !== null)
+  const updatedCart = cartItems.list
+    .map(({ productId, quantity }) => {
+      const cartProduct = products.list.find(
+        (product) => product.id === productId
+      );
+      return cartProduct ? { ...cartProduct, quantity } : null;
+    })
+    .filter((item) => item !== null);
 
-  console.log("Updated Cart Items:", updatedCart) // Console log inside useSelector
-  return updatedCart
-}
+  console.log("Updated Cart Items:", updatedCart); // Console log inside useSelector
+  return updatedCart;
+};
 // memoization of getCartItems function
-export const getAllCartItems = createSelector(getCartItems,(state)=>state)
-export const getCartLoadingState = (state) => state.cartItems.loading
-export const getCartError = (state) => state.cartItems.error
+export const getAllCartItems = createSelector(getCartItems, (state) => state);
+export const getCartLoadingState = (state) => state.cartItems.loading;
+export const getCartError = (state) => state.cartItems.error;
 // Exporting the reducer
 export default slice.reducer;
